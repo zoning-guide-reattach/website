@@ -141,7 +141,10 @@ h3 { font-size: clamp(1.2rem, 1.02rem + .35vw, 1.42rem); }
 .simple-item p { margin: var(--space-2) 0 0; color: var(--color-text-muted); max-width: 62ch; }
 .focus-columns { display: grid; gap: var(--space-4); margin-top: var(--space-4); }
 .focus-card,.project-card,.about-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
-.focus-card { padding: var(--space-5); }
+.focus-card {padding: var(--space-5);  display: flex;  flex-direction: column;}
+.focus-card h3 {  min-height: 3.2em;}
+.focus-card > p {  margin-top: var(--space-4);  min-height: 7.5em;  color: var(--color-text-muted);}
+.focus-card .focus-list {  margin-top: var(--space-4);}
 .focus-list,.about-list,.project-points { margin: var(--space-3) 0 0; padding: 0; list-style: none; }
 .focus-list li,.about-list li,.project-points li { position: relative; padding-left: 1.1rem; margin-top: var(--space-2); color: var(--color-text-muted); }
 .focus-list li::before,.about-list li::before,.project-points li::before { content: ""; position: absolute; left: 0; top: .72em; width: 6px; height: 6px; border-radius: 50%; background: var(--color-primary); }
