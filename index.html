@@ -1,792 +1,603 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IT-Service Christian Ditz - System Architect & IT Consultant</title>
-    <style>
-        /* CENTRALIZED COLOR SYSTEM - Adjust these 5 colors to change the entire theme */
-        :root {
-            --color-primary: #347fc5;      /* Main brand color (blue) */
-            --color-secondary: #5a5a5a;    /* Secondary brand color (dark gray) */
-            --color-accent: #f3a003;       /* Accent color (orange/yellow) */
-            --color-neutral: #666666;      /* Text and neutral elements */
-            --color-background: #f8f9fa;   /* Light backgrounds */
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: var(--color-neutral);
-            overflow-x: hidden;
-        }
-
-        /* Animated background */
-        .hero {
-            min-height: 50vh;
-            background: linear-gradient(135deg, var(--color-secondary) 0%, #282828 100%);
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: white;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
-            animation: gridMove 20s linear infinite;
-        }
-
-        @keyframes gridMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(20px, 20px); }
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            max-width: 800px;
-            padding: 2rem;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            animation: fadeInUp 1s ease-out;
-        }
-
-        .hero .subtitle {
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-            animation: fadeInUp 1s ease-out 0.2s both;
-        }
-
-        .hero .description {
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            opacity: 0.8;
-            animation: fadeInUp 1s ease-out 0.4s both;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(64, 113, 255, 0.98);
-            background: color-mix(in srgb, var(--color-primary) 98%, transparent);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            padding: 1rem 0;
-            transition: all 0.3s ease;
-        }
-
-        nav.scrolled {
-            background: color-mix(in srgb, var(--color-primary) 40%, transparent);
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2rem;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: white;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: #ffffff;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: var(--color-accent);
-        }
-
-        /* Sections */
-        section {
-            padding: 5rem 0;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            color: var(--color-neutral);
-            position: relative;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 4px;
-            background: linear-gradient(135deg, var(--color-secondary), #282828);
-            border-radius: 2px;
-        }
-
-        /* About Section */
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .about-content h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            color: var(--color-secondary);
-        }
-
-        .about-content p {
-            font-size: 1.1rem;
-            margin-bottom: 1.5rem;
-            color: var(--color-neutral);
-        }
-
-        .stats {
-            display: grid;
-			<!--grid-template-columns: repeat(3, 1fr);-->
-			grid-template-columns: repeat(2, 1fr);
-			gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .stat-item {
-            text-align: center;
-            padding: 1.5rem;
-            background: linear-gradient(135deg, color-mix(in srgb, var(--color-primary) 8%, white), color-mix(in srgb, var(--color-primary) 15%, white));
-            border-radius: 10px;
-            transition: transform 0.3s ease;
-        }
-
-        .stat-item:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: var(--color-secondary);
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            color: var(--color-neutral);
-            font-weight: 500;
-        }
-
-        /* Skills Section */
-        .skills-grid {
-            display: grid;
-            <!--grid-template-columns: repeat(2, minmax(300px, 1fr));-->
-			grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .skill-category {
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .skill-category:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-        }
-
-        .skill-category h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            color: var(--color-neutral);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .skill-icon {
-            width: 24px;
-            height: 24px;
-            background: linear-gradient(135deg, var(--color-secondary), #282828);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 12px;
-        }
-
-        .skill-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .skill-tag {
-            background: linear-gradient(135deg, color-mix(in srgb, var(--color-primary) 5%, white), color-mix(in srgb, var(--color-primary) 12%, white));
-            color: var(--color-secondary);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            border: 1px solid color-mix(in srgb, var(--color-primary) 20%, transparent);
-        }
-
-        /* Projects Section */
-        .projects {
-            background: var(--color-background);
-        }
-
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 2rem;
-        }
-
-        .project-card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .project-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-        }
-
-        .project-header {
-            background: linear-gradient(135deg, var(--color-secondary), #282828);
-            color: white;
-            padding: 1.5rem;
-        }
-
-        .project-title {
-            font-size: 1.3rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-
-        .project-company {
-            opacity: 0.9;
-            font-size: 0.9rem;
-        }
-
-        .project-content {
-            padding: 2rem;
-        }
-
-        .project-description {
-            color: var(--color-neutral);
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        .project-tech {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .tech-tag {
-            background: color-mix(in srgb, var(--color-primary) 5%, white);
-            color: var(--color-secondary);
-            padding: 0.3rem 0.8rem;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-
-        /* Contact Section */
-        .contact {
-            background: linear-gradient(135deg, var(--color-secondary), #282828);
-            color: white;
-        }
-
-        .contact .section-title {
-            color: white;
-        }
-
-        .contact .section-title::after {
-            background: white;
-        }
-
-        .contact-content {
-            text-align: center;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .contact-info {
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            margin-top: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .contact-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .contact-icon {
-            width: 50px;
-            height: 50px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
-
-        .contact-link {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: opacity 0.3s ease;
-        }
-
-        .contact-link:hover {
-            opacity: 0.8;
-        }
-
-
-		/* Imprint Section */
-        .imprint {
-            background: linear-gradient(135deg, var(--color-secondary), #282828);
-            color: white;
-        }
-
-        .imprint .section-title {
-            color: white;
-        }
-
-        .imprint .section-title::after {
-            background: white;
-        }
-
-        .imprint-content {
-            text-align: center;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-
-        /* Footer */
-        footer {
-            background: var(--color-neutral);
-            color: white;
-            text-align: center;
-            padding: 2rem 0;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            
-            .hero .subtitle {
-                font-size: 1.2rem;
-            }
-            
-            .about-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-            
-            .stats {
-                grid-template-columns: 1fr;
-            }
-            
-            .nav-links {
-                display: none;
-            }
-            
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .contact-info {
-                flex-direction: column;
-                gap: 1.5rem;
-            }
-        }
-
-        /* Scroll animations */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IT-Service Christian Ditz</title>
+  <meta name="description" content="IT-Service Christian Ditz – Systemarchitektur, Rechenzentrumsinfrastruktur, Virtualisierung, Monitoring, Backup & Recovery, Security, Hybrid-IT und Device Management" />
+<link rel="stylesheet" href="styles.css">
+<style>
+:root,
+[data-theme="light"] {
+  --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  --text-sm: clamp(0.92rem, 0.84rem + 0.22vw, 1rem);
+  --text-base: clamp(1rem, 0.96rem + 0.18vw, 1.08rem);
+  --text-lg: clamp(1.15rem, 1.02rem + 0.55vw, 1.4rem);
+  --text-xl: clamp(1.55rem, 1.22rem + 1.1vw, 2.2rem);
+  --text-2xl: clamp(2.45rem, 1.7rem + 2.5vw, 4.4rem);
+  --space-1: .25rem;
+  --space-2: .5rem;
+  --space-3: .75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --color-bg: #f7f5f0;
+  --color-surface: #fbfaf7;
+  --color-surface-2: #f1eee7;
+  --color-border: rgba(33,31,25,.11);
+  --color-divider: rgba(33,31,25,.08);
+  --color-text: #211f19;
+  --color-text-muted: #666159;
+  --color-text-faint: #8c867d;
+  --color-primary: #0d5d63;
+  --color-primary-soft: rgba(13,93,99,.12);
+  --color-text-inverse: #f8f7f4;
+  --shadow-sm: 0 1px 2px rgba(20,17,12,.05), 0 10px 24px rgba(20,17,12,.03);
+  --radius-sm: .55rem;
+  --radius-md: .95rem;
+  --radius-lg: 1.35rem;
+  --radius-xl: 1.8rem;
+  --radius-full: 999px;
+  --font-body: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-display: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  --content: 1240px;
+  --toc-width: 240px;
+  --header-height: 78px;
+}
+[data-theme="dark"] {
+  --color-bg: #161513;
+  --color-surface: #1d1c1a;
+  --color-surface-2: #24211f;
+  --color-border: rgba(232,227,218,.12);
+  --color-divider: rgba(232,227,218,.08);
+  --color-text: #e8e3da;
+  --color-text-muted: #b9b1a6;
+  --color-text-faint: #8e877d;
+  --color-primary: #79b7c0;
+  --color-primary-soft: rgba(121,183,192,.12);
+  --color-text-inverse: #11110f;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.25), 0 14px 30px rgba(0,0,0,.16);
+}
+*,*::before,*::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 5.5rem; }
+body { margin: 0; min-height: 100dvh; background: var(--color-bg); color: var(--color-text); font-family: var(--font-body); font-size: var(--text-base); line-height: 1.65; }
+a { text-decoration: none; color: inherit; }
+img,svg { display: block; max-width: 100%; }
+button { font: inherit; color: inherit; }
+h1,h2,h3 { margin: 0; font-family: var(--font-display); line-height: 1.03; letter-spacing: -.04em; text-wrap: balance; }
+h1 { font-size: var(--text-2xl); max-width: 10ch; }
+h2 { font-size: var(--text-xl); }
+h3 { font-size: clamp(1.2rem, 1.02rem + .35vw, 1.42rem); }
+.container { width: min(calc(100% - 2rem), var(--content)); margin-inline: auto; }
+.site-header { position: sticky; top: 0; z-index: 60; background: color-mix(in srgb, var(--color-bg) 88%, transparent); backdrop-filter: blur(16px); border-bottom: 1px solid var(--color-divider); transition: transform .9s cubic-bezier(.2,.8,.2,1), opacity .9s cubic-bezier(.2,.8,.2,1), box-shadow .9s ease; }
+.site-header.header-hidden { transform: translateY(-112%); opacity: .9; box-shadow: none; }
+.header-inner { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); min-height: var(--header-height); position: relative; }
+.brand { display: inline-flex; align-items: center; gap: var(--space-3); }
+.brand-mark { width: 42px; height: 42px; border-radius: 14px; background: var(--color-text); color: var(--color-bg); display: grid; place-items: center; box-shadow: var(--shadow-sm); }
+.brand-copy small { display: block; font-size: var(--text-xs); text-transform: uppercase; letter-spacing: .08em; color: var(--color-text-muted); font-weight: 700; }
+.brand-copy strong { display: block; font-size: var(--text-sm); font-weight: 700; }
+.desktop-nav { display: none; gap: var(--space-5); align-items: center; }
+.desktop-nav a,.menu-panel a,.toc-group-title,.toc-sublist a { position: relative; }
+.desktop-nav a { font-size: var(--text-sm); color: var(--color-text-muted); padding: .25rem 0; }
+.desktop-nav a::after,.menu-panel a::after,.toc-group-title::after,.toc-sublist a::after { content: ""; position: absolute; left: 0; bottom: -.18rem; width: 100%; height: 2px; background: var(--color-primary); transform: scaleX(0); transform-origin: left; transition: .18s ease; }
+.desktop-nav a.active,.menu-panel a.active { color: var(--color-primary); font-weight: 700; }
+.desktop-nav a.active::after,.menu-panel a.active::after,.toc-group-title.active::after,.toc-sublist a.active::after { transform: scaleX(1); }
+.header-actions { display: flex; align-items: center; gap: var(--space-3); }
+.theme-toggle,.menu-toggle { width: 44px; height: 44px; border: 1px solid var(--color-border); border-radius: var(--radius-full); background: var(--color-surface); display: grid; place-items: center; }
+.menu-panel { display: none; position: absolute; left: 1rem; right: 1rem; top: calc(100% + .5rem); padding: var(--space-4); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
+.menu-panel.open { display: grid; gap: var(--space-2); }
+.menu-panel a { padding: .85rem 0; border-radius: 0; background: transparent; font-weight: 600; color: var(--color-text-muted); }
+.page-shell { display: block; }
+.toc { display: none; }
+.main-column { min-width: 0; }
+.hero { padding: clamp(var(--space-12), 11vw, var(--space-24)) 0 var(--space-12); }
+.hero-wrap { display: grid; gap: var(--space-8); align-items: end; }
+
+.hero-wrap--solo {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 820px) {
+  .hero-wrap--solo {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.hero-wrap--solo > div:first-child {
+  width: 100%;
+  max-width: none;
+}
+
+.hero-wrap--solo h1 {
+  max-width: none;
+}
+
+.hero-wrap--solo .lead {
+  max-width: 72ch;
+}
+
+@media (min-width: 1120px) {
+  .hero-wrap--solo {
+    margin-right: calc(-1 * (var(--toc-width) + clamp(2rem, 4vw, 4rem)));
+  }
+}
+
+.eyebrow { display: inline-flex; align-items: center; gap: var(--space-2); padding: .45rem .8rem; border-radius: var(--radius-full); background: var(--color-primary-soft); color: var(--color-primary); font-size: var(--text-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.lead { max-width: 58ch; margin: var(--space-5) 0 0; color: var(--color-text-muted); }
+.hero-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-6); }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; padding: .9rem 1.15rem; border-radius: var(--radius-full); font-size: var(--text-sm); font-weight: 700; border: 1px solid transparent; }
+.btn-primary { background: var(--color-text); color: var(--color-bg); }
+.btn-secondary { display: inline-block; margin-bottom: 2rem; background: var(--color-surface); border-color: var(--color-border); }
+.hero-side { padding: var(--space-6); background: linear-gradient(180deg, var(--color-surface), var(--color-surface-2)); border: 1px solid var(--color-border); border-radius: var(--radius-xl); box-shadow: var(--shadow-sm); }
+.hero-side p { margin: var(--space-3) 0 0; color: var(--color-text-muted); }
+.hero-stats { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: var(--space-3); margin-top: var(--space-5); }
+.hero-stat { padding: var(--space-4); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); }
+.hero-stat strong { display: block; font-size: clamp(1.45rem, 1.1rem + .8vw, 1.95rem); font-family: var(--font-display); }
+.hero-stat span { display: block; margin-top: var(--space-1); font-size: var(--text-xs); line-height: 1.5; color: var(--color-text-muted); }
+.content-section { padding: var(--space-12) 0; border-top: 1px solid var(--color-divider); }
+.section-block { display: grid; gap: var(--space-5); }
+.section-block p { margin: 0; color: var(--color-text-muted); max-width: 60ch; }
+.kicker { font-size: var(--text-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--color-primary); }
+.simple-list { display: grid; gap: var(--space-3); margin-top: var(--space-2); }
+.simple-item { padding: var(--space-5) 0; border-top: 1px solid var(--color-divider); }
+.simple-item:first-child { border-top: none; padding-top: 0; }
+.simple-item p { margin: var(--space-2) 0 0; color: var(--color-text-muted); max-width: 62ch; }
+.focus-columns { display: grid; gap: var(--space-4); margin-top: var(--space-4); }
+.focus-card,.project-card,.about-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
+.focus-card { padding: var(--space-5); }
+.focus-list,.about-list,.project-points { margin: var(--space-3) 0 0; padding: 0; list-style: none; }
+.focus-list li,.about-list li,.project-points li { position: relative; padding-left: 1.1rem; margin-top: var(--space-2); color: var(--color-text-muted); }
+.focus-list li::before,.about-list li::before,.project-points li::before { content: ""; position: absolute; left: 0; top: .72em; width: 6px; height: 6px; border-radius: 50%; background: var(--color-primary); }
+.projects-list { display: grid; gap: var(--space-4); margin-top: var(--space-4); }
+.project-card { padding: var(--space-5); scroll-margin-top: 6.5rem; }
+.project-card p { margin: var(--space-3) 0 0; color: var(--color-text-muted); }
+.project-top { display: flex; justify-content: space-between; gap: var(--space-3); align-items: flex-start; }
+.tag { display: inline-flex; padding: .42rem .72rem; border-radius: var(--radius-full); background: var(--color-surface-2); border: 1px solid var(--color-border); font-size: var(--text-xs); color: var(--color-text-muted); }
+.stack { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-4); }
+.about-card { padding: var(--space-6); margin-top: var(--space-4); }
+.about-card p { margin: var(--space-3) 0 0; color: var(--color-text-muted); max-width: 62ch; }
+
+.contact-box { margin-top: var(--space-4); padding: var(--space-6); background: var(--color-surface); color: var(--color-text); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); position: relative; overflow: hidden; }
+.contact-box::after { display: none; }
+.contact-box p { margin: var(--space-3) 0 0; max-width: 62ch; color: var(--color-text-muted); }
+.contact-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-6); }
+.contact-actions .btn-secondary { background: var(--color-surface); border-color: var(--color-border); color: var(--color-text); }
+
+.site-footer { padding: var(--space-8) 0 var(--space-10); border-top: 1px solid var(--color-divider); }
+.footer-inner { display: flex; flex-direction: column; gap: var(--space-3); font-size: var(--text-sm); color: var(--color-text-muted); }
+.footer-links { display: flex; flex-wrap: wrap; gap: var(--space-4); }
+.toc-nav { position: sticky; top: calc(var(--header-height) + 1.5rem); padding-top: var(--space-6); }
+.toc-title { font-size: var(--text-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-faint); margin-bottom: var(--space-4); }
+.toc-groups { display: grid; gap: var(--space-4); }
+.toc-group { padding-left: var(--space-4); border-left: 1px solid var(--color-divider); }
+.toc-group.collapsed .toc-sublist { display: none; }
+.toc-group:not(.collapsed) .toc-group-title { color: var(--color-primary); }
+.toc-group:not(.collapsed) .toc-group-title::after { transform: scaleX(1); }
+.toc-group-title { display: inline-block; font-size: var(--text-sm); font-weight: 600; color: var(--color-text-muted); padding-bottom: .1rem; }
+.toc-group-title.active { color: var(--color-primary); font-weight: 700; }
+.toc-sublist { list-style: none; margin: var(--space-3) 0 0; padding: 0; display: grid; gap: var(--space-2); }
+.toc-sublist a { display: inline-block; font-size: var(--text-xs); color: var(--color-text-faint); padding-bottom: .08rem; }
+.toc-sublist a.active { color: var(--color-primary); font-weight: 700; }
+[data-theme="light"] .btn-primary { background: var(--color-text); color: var(--color-bg); }
+[data-theme="dark"] .btn-primary { background: var(--color-text); color: var(--color-bg); }
+:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; }
+@media (min-width: 820px) {
+  .desktop-nav { display: flex; }
+  .menu-toggle,.menu-panel { display: none !important; }
+  .hero-wrap { grid-template-columns: minmax(0,1.12fr) minmax(320px,.88fr); }
+  .focus-columns { grid-template-columns: repeat(3,minmax(0,1fr)); }
+  .footer-inner { flex-direction: row; justify-content: space-between; align-items: center; }
+}
+@media (min-width: 1120px) {
+  .page-shell { display: grid; grid-template-columns: var(--toc-width) minmax(0,1fr); gap: clamp(2rem,4vw,4rem); }
+  .toc { display: block; }
+}
+@media (max-width: 819px) {
+  .project-top { flex-direction: column; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *,*::before,*::after { transition: none !important; animation: none !important; }
+}
+
+/*
+#back-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20%;
+  z-index: 1000;
+}
+*/
+
+.show-email {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit; 
+    color: inherit;
+    cursor: pointer;
+}
+
+
+.desktop-nav a.active,
+.menu-panel a.active,
+.toc-group-title.active,
+.toc-sublist a.active {
+color: var(--color-primary);
+font-weight: 700;
+}
+
+.toc-group:not(.collapsed) {
+border-left-color: var(--color-primary);
+}
+
+</style>
 </head>
 <body>
-    <nav id="navbar">
-        <div class="nav-container">
-            <div class="logo"><img src="logo.png" alt="nimbu5" style="floating:left; height:50px; margin-right: 30px; position: relative; top: 10px;">IT-Service Christian Ditz</div>
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#projects">Projekte</a></li>
-                <li><a href="#contact">Kontakt</a></li>
-                <li><a href="#imprint" target="_blank">Impressum</a></li>
-                <li><a href="dataprivacy.html" target="_blank">Datenschutz</a></li>
+    <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#top" aria-label="IT-Service Christian Ditz Startseite">
+        <!--
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 8h11a4 4 0 0 1 4 4v12"></path>
+            <path d="M25 24H14a4 4 0 0 1-4-4V8"></path>
+          </svg>
+        </span>
+      -->
+        <span class="brand-mark" style="color: #0d5d63;" aria-hidden="true">
+          <svg viewBox="0 0 32 32" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+            <!-- C (Mitte bei 13) -->
+            <path d="M15 7a6 6 0 1 0 0 12"></path>
+            <!-- D (Mitte bei 19) -->
+            <path d="M19 13v12h3a6 6 0 0 0 0-12h-3z"></path>
+          </svg>
+        </span>
+        <span class="brand-copy"><small>IT-Service</small><strong>Christian Ditz</strong></span>
+      </a>
+
+      <nav class="desktop-nav" aria-label="Hauptnavigation">
+        <a href="#top" data-main-link="top">Home</a>
+        <a href="#leistungen" data-main-link="leistungen">Leistungen</a>
+        <a href="#projekte" data-main-link="projekte">Projekte</a>
+        <a href="#ueber-mich" data-main-link="ueber-mich">Über mich</a>
+        <a href="#kontakt" data-main-link="kontakt">Kontakt</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Farbschema wechseln"></button>
+        <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="mobile-menu" aria-label="Menü öffnen">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div class="menu-panel" id="mobile-menu" aria-label="Mobiles Menü">
+        <a href="#top" data-main-link="top">Home</a>
+        <a href="#leistungen" data-main-link="leistungen">Leistungen</a>
+        <a href="#projekte" data-main-link="projekte">Projekte</a>
+        <a href="#ueber-mich" data-main-link="ueber-mich">Über mich</a>
+        <a href="#kontakt" data-main-link="kontakt">Kontakt</a>
+      </div>
+    </div>
+  </header>
+
+<main id="content" class="container page-shell">
+    <aside class="toc" aria-label="Inhaltsverzeichnis der aktuellen Hauptsektion">
+      <nav class="toc-nav">
+        <!--
+        <div class="toc-title">Abschnitte</div>
+        -->
+        <div class="toc-groups">
+          <div class="toc-group collapsed" data-group="Home">
+            <a href="#top" class="toc-group-title" data-group-link="top">Home</a>
+            <ul class="toc-sublist">
             </ul>
+          </div>
+          <div class="toc-group collapsed" data-group="leistungen">
+            <a href="#leistungen" class="toc-group-title" data-group-link="leistungen">Leistungen</a>
+            <ul class="toc-sublist">
+            </ul>
+          </div>
+          <div class="toc-group collapsed" data-group="projekte">
+            <a href="#projekte" class="toc-group-title" data-group-link="projekte">Projekte</a>
+            <ul class="toc-sublist">
+              <li><a href="#projekt-citrix" data-sub-link="projekt-citrix">Monitoring Citrix Farm</a></li>
+              <li><a href="#projekt-dc-refresh" data-sub-link="projekt-dc-refresh">Erneuerung RZ &amp; Ausweitung Security</a></li>
+              <li><a href="#projekt-m365" data-sub-link="projekt-m365">M365 &amp; Azure AD hybrid</a></li>
+              <li><a href="#projekt-hw-refresh" data-sub-link="projekt-hw-refresh">Hardware Refresh &amp; EXO</a></li>
+            </ul>
+          </div>
+          <div class="toc-group collapsed" data-group="ueber-mich">
+            <a href="#ueber-mich" class="toc-group-title" data-group-link="ueber-mich">Über mich</a>
+            <ul class="toc-sublist">
+            </ul>
+          </div>
+          <div class="toc-group collapsed" data-group="kontakt">
+            <a href="#kontakt" class="toc-group-title" data-group-link="kontakt">Kontakt</a>
+            <ul class="toc-sublist">
+            </ul>
+          </div>
+          <!--
+          <div class="toc-group collapsed" data-group="rechtliches">
+            <a href="#" class="toc-group-title" data-group-link="rechtliches" aria-expanded="false">Rechtliches</a>
+            <ul class="toc-sublist">
+              <li><a href="impressum.html" target="_blank" rel="noopener noreferrer">Impressum</a></li>
+              <li><a href="datenschutz.html" target="_blank" rel="noopener noreferrer">Datenschutz</a></li>
+            </ul>
+          </div>
+          -->
         </div>
-    </nav>
+      </nav>
+    </aside>
 
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <!--<h1>Christian Ditz</h1>--><br><br><br>
-            <div class="subtitle">IT-System Architect & Consultant</div>
-            <div class="description">
-                <p>Erfahrener System Architect mit umfassender Expertise in der Konzeption und Implementierung von Rechenzentrumsinfrastrukturen und Hybrid-Umgebungen.</p>
-                <p>Spezialisiert auf Virtualisierung, Backup & Recovery, Monitoring sowie Device Management.</p>
+    <div class="main-column">
+      <section class="hero" id="top" data-main-section="top">
+        <!-- Soll das Kurzprofil wieder eingeblendet werden, dann auch hier den Part "hero-wrap--solo" -->
+        <div class="hero-wrap hero-wrap--solo">
+          <div>
+            <span class="eyebrow">Systemarchitektur · Rechenzentrumsinfrastruktur · Virtualisierung · Monitoring · Backup & Recovery · Security · Hybrid-IT · Device Management</span>
+            <h1>IT als zuverlässiges Rückgrat für mittelständischen Unternehmenserfolg</h1>
+            <p class="lead">Als IT-Freelancer unterstütze ich Unternehmen bei Konzeption, Implementierung und Weiterentwicklung moderner IT-Umgebungen – von Rechenzentrumsinfrastruktur und Virtualisierung bis zu Monitoring, Backup &amp; Recovery und Microsoft Hybrid-Szenarien.</p>
+            <div class="hero-actions">
+              <a class="btn btn-secondary" href="#kontakt">Projekt anfragen</a>
+              <a class="btn btn-secondary" href="#projekte">Projekte ansehen</a>
             </div>
-        </div>
-    </section>
-
-    <section id="about" class="about">
-        <div class="container">
-            <h2 class="section-title fade-in">Über mich</h2>
-            <div class="about-grid">
-                <div class="about-content fade-in">
-                    <h3>Systemarchitekt</h3>
-                    <p>Mit über 15 Jahren IT-Berufserfahrung und mehr als 10 Jahren in Beratung, Design und Implementierung bringe ich umfassende Expertise in der Konzeption und Umsetzung von IT-Infrastrukturen mit.</p>
-                    <p>Als engagierter Team-Player mit gewissenhafter Arbeitsweise entwickle ich maßgeschneiderte Lösungen zur Optimierung der IT-Performance und -Sicherheit für Unternehmen verschiedener Größenordnungen.</p>
-                </div>
-                <div class="stats fade-in">
-                    <div class="stat-item">
-                        <div class="stat-number">15+ Jahre</div>
-                        <div class="stat-label">IT-Berufserfahrung</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">10+ Jahre</div>
-						<div class="stat-label">Beratung, Design & Implementierung</div>
-                    <!--</div>
-                    <div class="stat-item">
-                        <div class="stat-number">500+</div>
-                        <div class="stat-label">Services betreut</div>
-                    </div>-->
-                </div>
+          </div>
+          <!--
+          <aside class="hero-side" aria-label="Kurzprofil und Kennzahlen">
+            <span class="kicker">Christian Ditz</span>
+            <h2>Kurzprofil</h2>
+            <p>Fokus auf stabile Zielarchitekturen, saubere Migrationen und eine Infrastruktur, die im realen Betrieb nachvollziehbar und wartbar bleibt.</p>
+            <p>Ich arbeite an der Schnittstelle von Architektur, technischer Umsetzung und laufendem Betrieb. Ziel ist nicht nur eine saubere Lösung auf dem Papier, sondern eine Umgebung, die langfristig stabil, nachvollziehbar und wartbar bleibt.</p>
+            <div class="hero-stats">
+              <div class="hero-stat"><strong>15+</strong><span>Jahre IT-Berufserfahrung</span></div>
+              <div class="hero-stat"><strong>10+</strong><span>Jahre Beratung, Design und Implementierung</span></div>
             </div>
+          </aside>
+        -->
         </div>
-    </section>
+      </section>
 
-    <section id="skills" class="skills">
-        <div class="container">
-            <h2 class="section-title fade-in">Fokusthemen</h2>
-            <div class="skills-grid">
-                <div class="skill-category fade-in">
-                    <h3><span class="skill-icon">🏗️</span>Projekt & Implementierung</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">Projektmanagement</span>
-                        <span class="skill-tag">Implementierung</span>
-                        <span class="skill-tag">Betrieb</span>
-                        <span class="skill-tag">Migration</span>
-                        <span class="skill-tag">Lift & Shift</span>
-                    </div>
+      <section class="content-section" id="leistungen" data-main-section="leistungen">
+        <div class="section-block">
+          <span class="kicker">Leistungen</span>
+          <p>Ich begleite Infrastrukturprojekte nicht nur konzeptionell, sondern auch in der konkreten Umsetzung und darüber hinaus.<br>
+            Der Fokus liegt auf belastbaren Zielbildern, sauberer Migration und stabilen Betriebsgrundlagen.</p>
+          <div class="focus-columns">
+            <article class="focus-card">
+              <h3>Infrastruktur &amp; Zielarchitektur</h3>
+              <p><br>Konzeption und Implementierung von Rechenzentrumsinfrastrukturen, Hybrid-Umgebungen und belastbaren Zielbildern für gewachsene Unternehmens-IT.</p>
+              <ul class="focus-list">
+                <li>Design, Aufbau und Inbetriebnahme von Infrastrukturen</li>
+                <li>Migration und Modernisierung von Technologiestacks</li>
+                <li>Microsoft Active Directory, Azure AD (Entra ID) und Hybrid-Szenarien inkl. Exchange</li>
+              </ul>
+            </article>
+            <article class="focus-card">
+              <h3>Virtualisierung &amp; Plattformbetrieb</h3>
+              <p><br>Planung, Aufbau und Weiterentwicklung virtualisierter Plattformen mit Fokus auf VMware, Citrix und Hyper-V.</p>
+              <ul class="focus-list">
+                <li>Servervirtualisierung auf Basis von VMware, XenServer oder Hyper-V</li>
+                <li>Applikationsvirtualisierung auf Basis von Terminalserver oder Citrix Virtual Apps</li>
+              </ul>
+            </article>
+            <article class="focus-card">
+              <h3>Betriebssicherheit, Monitoring, Backup &amp; Recovery</h3>
+              <p><br>Monitoring, Backup & Recovery sowie sicherheitsnahe Maßnahmen für Transparenz, Verfügbarkeit und kontrollierte Wiederherstellung.</p>
+              <ul class="focus-list">
+                <li>Firewall &amp; Remote Access</li>
+                <li>AntiVirus und EDR</li>
+                <li>Monitoring für servicenahe Transparenz</li>
+                <li>Backup &amp; Recovery mit Fokus auf SLAs (RPO/RTO)</li>
+
+              </ul>
+            </article>
+            <article class="focus-card">
+              <h3>Device Management &amp; Microsoft Hybrid Workplace</h3>
+              <p><br>Verwaltung und Absicherung von Endgeräten über Intune in Anbindung an Azure AD (Entra ID) oder Hybrid AD – von der Konzeption bis zur Integration in bestehende Microsoft-Umgebungen.</p>
+              <ul class="focus-list">
+                <li>Endpoint-Verwaltung mit Microsoft Intune</li>
+                <li>Verwaltung von Softwareinstallationen</li>
+                <li>Durchsetzen von ZeroTrust &amp; Compliance-Richtlinien</li>
+              </ul>
+            </article>
+            <article class="focus-card">
+              <h3>Projektbegleitung &amp; Betrieb</h3>
+              <p><br>Begleitung über alle Projektphasen – von der ersten Analyse bis zur stabilen Übergabe in den produktiven Betrieb.</p>
+              <ul class="focus-list">
+                <li>Technische Analyse und Sizing</li>
+                <li>Architektur, Rollout und Inbetriebnahme</li>
+                <li>Wissenstransfer &amp; Übergabe an 1st/2nd Level IT-Support</li>
+                <li>Begleitung im operativen Betrieb</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="projekte" data-main-section="projekte">
+        <div class="section-block">
+          <span class="kicker">Projekte</span>
+          <h2>Ausgewählte Projekte</h2>
+          <div class="projects-list">
+            <article class="project-card" id="projekt-citrix" data-sub-section="projekt-citrix" data-parent-section="projekte">
+              <div class="project-top">
+                <div>
+                  <h3>Citrix Farm und Servicemonitoring</h3>
+                  <span class="kicker">Führendes deutsches Steuerberatungsunternehmen</span>
                 </div>
-                <div class="skill-category fade-in">
-                    <h3><span class="skill-icon">💻</span>Virtualisierung & Backup</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">VMware</span>
-                        <span class="skill-tag">Hyper-V</span>
-                        <span class="skill-tag">Citrix</span>
-                        <span class="skill-tag">Veeam</span>
-                        <span class="skill-tag">Backup & Replication</span>
-                    </div>
+                <!-- <span class="tag">500+ Services</span> -->
+              </div>
+              <p>Infrastrukturanalyse und Monitoring-Konzeption für eine große Citrix-Umgebung mit Fokus auf Transparenz und Betriebssicherheit. Erweiterung um servicenahe Überwachung von über 500 Services.</p>
+              <ul class="project-points">
+                <li>Citrix Virtual Apps and Desktops, XenServer mit NVIDIA GPUs für ca. 1500 Benutzer</li>
+                <li>Citrix Provisioning Services, Sharefile und M365-Integration</li>
+                <li>PRTG als Monitoring-Basis zur Überwachung der Diensteverfügbarkeit</li>
+                <li>ControlUp als Monitoring-Basis zur Überwachung der Performance</li>
+              </ul>
+              <div class="stack">
+                <span class="tag">Citrix</span>
+                <span class="tag">XenServer</span>
+                <span class="tag">Virtual Apps</span>
+                <span class="tag">Endpoint Management (MDM)</span>
+                <span class="tag">Virtualisierung</span>
+                <span class="tag">PRTG</span>
+                <span class="tag">ControlUp</span>
+                <span class="tag">Monitoring</span>
+                <span class="tag">PowerShell</span>
+                <span class="tag">M365</span>
+              </div>
+            </article>
+
+            <article class="project-card" id="projekt-dc-refresh" data-sub-section="projekt-dc-refresh" data-parent-section="projekte">
+              <div class="project-top">
+                <div>
+                  <h3>Erneuerung Rechenzentrum &amp; Ausweitung Sicherheitsmaßnahmen</h3>
+                  <span class="kicker">Beratungs- und Kommunikationsagentur</span>
                 </div>
-                <div class="skill-category fade-in">
-                    <h3><span class="skill-icon">📊</span>Monitoring & Management</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">PRTG</span>
-                        <span class="skill-tag">ControlUp</span>
-                        <span class="skill-tag">Intune</span>
-                        <span class="skill-tag">Device Management</span>
-                        <span class="skill-tag">Performance Monitoring</span>
-                    </div>
+                <!-- <span class="tag">Lift &amp; Shift</span> -->
+              </div>
+              <p>Umfassende Infrastrukturanalyse, Sizing und Neukonzeption einer Rechenzentrumsinfrastruktur mit Netzwerksegmentierung, Migration bestehender Dienste und ergänzenden Sicherheitsmaßnahmen.</p>
+              <ul class="project-points">
+                <li>Analyse, Sizing, Konzeption und Begleitung des gesamten Bestellprozesses</li>
+                <li>Netzwerksegmentierung auf Basis von Subnetzen und VLANs, inkl. SecurePoint UTM Firewall</li>
+                <li>Windows-Server-Upgrade, Monitoring (PRTG), Passwort-Management und Sophos Endpoint</li>
+              </ul>
+              <div class="stack">
+                <span class="tag">Veeam</span>
+                <span class="tag">SecurePoint UTM</span>
+                <span class="tag">VLAN</span>
+                <span class="tag">Windows Server</span>
+                <span class="tag">PRTG</span>
+                <span class="tag">Sophos</span>
+                <span class="tag">Firewall</span>
+                <span class="tag">AntiVirus</span>
+                <span class="tag">Defender</span>
+              </div>
+            </article>
+
+            <article class="project-card" id="projekt-m365" data-sub-section="projekt-m365" data-parent-section="projekte">
+              <div class="project-top">
+                <div>
+                  <h3>Onboarding M365 &amp; Azure AD (Entra ID) hybrid</h3>
+                  <span class="kicker">Regionale Versicherungsagentur</span>
                 </div>
-                <div class="skill-category fade-in">
-                    <h3><span class="skill-icon">☁️</span>Cloud & Infrastruktur</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">Microsoft 365</span>
-                        <span class="skill-tag">Azure AD</span>
-                        <span class="skill-tag">Exchange Online</span>
-                        <span class="skill-tag">Teams & SharePoint</span>
-                        <span class="skill-tag">Hybrid-Umgebungen</span>
-                    </div>
+                <!-- <span class="tag">Hybrid</span> -->
+              </div>
+              <p>Konzeption und Implementierung einer Diensteverlagerung von Exchange On-Premise zu Exchange Online, inkl. Migration zu M365, Teams-Onboarding und hybrider Endpoint-Integration in Intune.</p>
+              <ul class="project-points">
+                <li>Upgrademigration Exchange Server &amp; Implementierung Exchange hybrid Szenario, anschließend CutOver zu Exchange Online</li>
+                <li>Bereitstellung und gezieltes Onboarding zu Teams und SharePoint für die gesamte Belegschaft</li>
+                <li>Hybrid-Join der Endpoints und Integration in Microsoft Intune</li>
+              </ul>
+              <div class="stack">
+                <span class="tag">Exchange</span>
+                <span class="tag">Azure AD</span>
+                <span class="tag">Entra ID</span>
+                <span class="tag">Intune</span>
+                <span class="tag">Defender</span>
+                <span class="tag">Teams</span>
+                <span class="tag">Sharepoint</span>
+              </div>
+            </article>
+
+            <article class="project-card" id="projekt-hw-refresh" data-sub-section="projekt-hw-refresh" data-parent-section="projekte">
+              <div class="project-top">
+                <div>
+                  <h3>Hardware Refresh und Migration zu Exchange Online</h3>
+                  <span class="kicker">Führende deutsche PR-Agentur</span>
                 </div>
+                <!-- <span class="tag">Refresh</span> -->
+              </div>
+              <p>Konzeption und Implementierung eines umfassenden Server- und Client-Refreshs mit Neuaufbau der Microsoft-Infrastruktur und Migration zu Exchange Online zur Steigerung der Kosteneffizienz.</p>
+              <ul class="project-points">
+                <li>Neuaufbau der Microsoft Active Directory- und Fileserver-Struktur auf neuer Dell-Hardware</li>
+                <li>Konfiguration der M365-Domäne und hybride Anbindung an Azure Active Directory (Entra ID)</li>
+                <li>Migration von Exchange On-Premise zu Exchange Online und der bestehenden Fileservices</li>
+              </ul>
+              <div class="stack">
+                <span class="tag">Active Directory</span>
+                <span class="tag">Azure AD</span>
+                <span class="tag">Entra ID</span>
+                <span class="tag">Exchange</span>
+                <span class="tag">PowerShell</span>
+                <span class="tag">M365</span>
+                <span class="tag">Dell</span>
+                <span class="tag">VMware</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="ueber-mich" data-main-section="ueber-mich">
+        <div class="section-block">
+          <span class="kicker">Über mich</span>
+          <!-- <h2>Von der Idee bis zum laufenden System</h2> -->
+          <div class="about-card">
+            <h3>Architektur, Umsetzung und Betrieb aus einer Hand</h3>
+            <p>Ich arbeite an der Schnittstelle von Architektur, technischer Umsetzung und laufendem Betrieb. Ziel ist nicht nur eine saubere Lösung auf dem Papier, sondern eine Umgebung, die langfristig stabil, nachvollziehbar und wartbar bleibt.</p>
+            <ul class="about-list">
+              <li>Ausbildung zum Fachinformatiker Systemintegration (IHK)</li>
+              <li>über 15 Jahre IT-Berufserfahrung</li>
+              <li>über 10 Jahre Beratung, Design und Implementierung für Unternehmen aus verschiedensten Branchen</li>
+              <li>über 7 Jahre als externer IT-Dienstleister für Beratung, Design und Implementierung</li>
+              <li>Teamorientiert, engagiert und gewissenhaft in Projekt und Betrieb</li>
+              <li>Arbeitssprachen deutsch und englisch</li>
+              <li>Schwerpunkte in Virtualisierung, M365, Backup &amp; Recovery, Monitoring und Hybrid-IT</li>
+              <li>technisches Know-How:<br>M365, Intune, Defender, VMware vSphere, Hyper-V, XenServer, Paessler PRTG, ControlUp, Dell Emc, NetApp, Exchange, Windows Server, Veeam Backup & Replication, Pleasant Password Server, Sophos XG, Sophos SG, Sophos Enterprise Console, etc.</li>
+              
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="kontakt" data-main-section="kontakt">
+        <div class="section-block">
+          <span class="kicker">Kontakt</span>
+          <h2>Sie planen ein Infrastrukturprojekt oder möchten Ihre bestehende Umgebung modernisieren?</h2>
+          <div class="contact-box">
+            <p>Dann lassen Sie uns unverbindlich sprechen.<br>Ich unterstütze bei Analyse, Zielarchitektur, Migration und technischer Umsetzung in produktiven Unternehmensumgebungen.</p>
+            <div class="contact-actions">
+            <button class="contact-btn show-email" type="button">Kontakt</button>
+            <a class="contact-btn email-link" href="#" style="display:none;"></a>
             </div>
+          </div>
         </div>
-    </section>
+      </section>
+      <div style="text-align: right;">
+      <a class="btn btn-secondary" href="#top">Zurück nach oben ↑</a>
+      </div>
+    </div>
+  </main>
 
-    <section id="projects" class="projects">
-        <div class="container">
-            <h2 class="section-title fade-in">Ausgewählte Projekte</h2>
-            <div class="projects-grid">
-                <div class="project-card fade-in">
-                    <div class="project-header">
-                        <div class="project-title">Citrix Farm und Servicemonitoring</div>
-                        <div class="project-company">Führendes deutsches Steuerberatungsunternehmen</div>
-                    </div>
-                    <div class="project-content">
-                        <div class="project-description">
-                            <ul>
-								<li>Infrastrukturanalyse & Konzeption für über 500 Services</li>
-								<li>Umsetzung Monitoring der Citrix Umgebungen mittels PRTG und in Ergänzung zu ControlUp</li>
-							</ul>
-							<br>
-							<p>Design, Aufbau, Weiterentwicklung und Support des Monitorings der Citrix-Plattform auf Basis Paessler PRTG und ControlUp, für ca.1500 Benutzer, inkl. Citrix Virtual Apps and Desktops, XenServer mit NVIDIA GPUs, Provisioning Services, Citrix Netscaler, Citrix Endpoint Management, Citrix Sharefile, Office365, App-V.</p>
-                        </div>
-                        <div class="project-tech">
-                            <span class="tech-tag">Citrix</span>
-                            <span class="tech-tag">Xen</span>
-                            <span class="tech-tag">NVIDIA GPUs</span>
-                            <span class="tech-tag">Virtual Apps</span>
-                            <span class="tech-tag">M365</span>
-                            <span class="tech-tag">PRTG</span>
-                            <span class="tech-tag">ControlUp</span>
-                            <span class="tech-tag">Defender</span>						
-                        </div>
-                    </div>
-                </div>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>©2026 | IT-Service Christian Ditz | Alle Rechte vorbehalten.</p>
+      <div class="footer-links">
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <button class="show-email">Kontakt</button>
+        <a class="email-link" href="#" style="display:none;"></a>
+        <a href="https://www.linkedin.com/in/christianditz" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" style="display:inline-flex;align-items:center;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="margin-right:0.4rem;">
+            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+          </svg>
+          LinkedIn
+        </a>
+      </div>
+    </div>
+  </footer>
 
-                <div class="project-card fade-in">
-                    <div class="project-header">
-                        <div class="project-title">DC-Refresh Infrastructure & Security</div>
-                        <div class="project-company">Beratungs- und Kommunikationsagentur</div>
-                    </div>
-                    <div class="project-content">
-                        <div class="project-description">
-                            Umfassende Infrastrukturanalyse, Sizing und Konzeption zur Erneuerung der Rechenzentrumsinfrastruktur. 
-                            Realisierung einer Netzwerksegmentierung und Implementation von Monitoring- und Sicherheitslösungen.
-                        </div>
-                        <div class="project-tech">
-                            <span class="tech-tag">Dell PowerEdge</span>
-                            <span class="tech-tag">HP Server</span>
-                            <span class="tech-tag">VLAN</span>
-                            <span class="tech-tag">SecurePoint UTM</span>
-                            <span class="tech-tag">Veeam</span>
-                            <span class="tech-tag">Sophos</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card fade-in">
-                    <div class="project-header">
-                        <div class="project-title">M365 & Azure AD-Hybrid Onboarding</div>
-                        <div class="project-company">Führende deutsche Tech-PR Agentur</div>
-                    </div>
-                    <div class="project-content">
-                        <div class="project-description">
-                            Migration von Exchange On-Premise zu Exchange Online in Microsoft 365. 
-                            Hybrid-Join der Endpoints, Integration in Intune und gezieltes Onboarding zu Microsoft Teams.
-                        </div>
-                        <div class="project-tech">
-                            <span class="tech-tag">Exchange Online</span>
-                            <span class="tech-tag">M365</span>
-                            <span class="tech-tag">Azure AD</span>
-                            <span class="tech-tag">Intune</span>
-                            <span class="tech-tag">Teams</span>
-                            <span class="tech-tag">SharePoint</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card fade-in">
-                    <div class="project-header">
-                        <div class="project-title">HW-Refresh und Exchange Migration</div>
-                        <div class="project-company">Regionale Versicherungsagentur</div>
-                    </div>
-                    <div class="project-content">
-                        <div class="project-description">
-                            Umfassender Server- und Client-Refresh zur Modernisierung der IT-Infrastruktur. 
-                            Neuaufbau der Active Directory-Struktur und Migration zu Exchange Online.
-                        </div>
-                        <div class="project-tech">
-                            <span class="tech-tag">Dell OptiPlex</span>
-                            <span class="tech-tag">Active Directory</span>
-                            <span class="tech-tag">Exchange Migration</span>
-                            <span class="tech-tag">M365</span>
-                            <span class="tech-tag">Group Policy</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact" class="contact">
-        <div class="container">
-            <h2 class="section-title fade-in">Kontakt</h2>
-            <div class="contact-content fade-in">
-                <p>Interessiert an einer Zusammenarbeit? Kontaktieren Sie mich gerne für ein unverbindliches Gespräch über Ihr nächstes IT-Projekt.</p>
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <div class="contact-icon">💼</div>
-                        <a href="https://www.linkedin.com/in/christianditz/" target="_blank" class="contact-link">LinkedIn</a>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">📧</div>
-                        <span class="contact-link">IT-Service Christian Ditz</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-    <section id="imprint" class="imprint">
-        <div class="container">
-            <h2 class="section-title fade-in">Impressum</h2>
-            <div class="imprint-content fade-in">
-                <p>Die Webseite wird betrieben von:</p>
-				<br>
-				<p>IT-Service Christian Ditz</p>
-				<p>Dürrenhembacher Str. 7</p>
-				<p>90592 Schwarzenbruck</p>
-				<br>
-				<p>Inhaber: Christian Ditz</p>
-				<br>
-				<p>E-Mail: hostmaster@its-ditz.de</p>
-				<p>Internet: its-ditz.de</p>
-				<br>
-				<p>Rechtliche Angaben USt-IdNr.: DE320713693</p>
-				<p>Gesetzlicher Vertreter: Herr Christian Ditz</p>
-				<br>
-				<p>Haftungsausschluss:</p>
-				<p>Der Anbieter übernimmt keine Haftung für die Richtigkeit, Vollständigkeit und Aktualität der bereit gestellten Informationen.</p>
-				<p>Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Haftung für die Inhalte externer Links.</p>
-				<p>Für den Inhalt der verlinkten Seiten sind ausschließlich deren Betreiber verantwortlich.
-				</p>
-
-            </div>
-        </div>
-    </section>
-
-
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2018 - 2025 Christian Ditz. Alle Rechte vorbehalten.</p>
-        </div>
-    </footer>
-
-    <script>
-        // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Navbar scroll effect
-        window.addEventListener('scroll', () => {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 100) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
-
-        // Fade-in animation on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.fade-in').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Add stagger effect to project cards
-        const projectCards = document.querySelectorAll('.project-card');
-        projectCards.forEach((card, index) => {
-            card.style.animationDelay = `${index * 0.2}s`;
-        });
-    </script>
+  <script src="main.js" defer></script>
 </body>
 </html>
